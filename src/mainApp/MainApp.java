@@ -2,6 +2,8 @@ package mainApp;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -28,6 +30,31 @@ public class MainApp {
 		frame.setTitle("Jetpack Joyride");
 		System.out.println(filename);
 		Level level1 = new Level(filename);
+		frame.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					level1.setSpacePressed(true);
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					level1.setSpacePressed(false);
+				}
+			}
+			
+		});
 		frame.add(level1);
 		
 		Timer t = new Timer(50, new ActionListener() {
@@ -35,7 +62,6 @@ public class MainApp {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
 				advanceOneTick();
 				
 			}
@@ -44,7 +70,6 @@ public class MainApp {
 				level1.repaint();
 			}
 		});
-		
 		t.start();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
