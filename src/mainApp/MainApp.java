@@ -87,7 +87,7 @@ public class MainApp {
 		MainApp mainApp = new MainApp();
 		
 		try {
-			runApp("trialRun.txt");
+			runApp("Level2.txt");
 		} catch (FileNotFoundException e) {
 			System.err.println("File Not Found :(");
 		}
