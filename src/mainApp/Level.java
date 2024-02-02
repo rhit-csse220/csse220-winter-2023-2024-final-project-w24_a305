@@ -212,6 +212,12 @@ public class Level extends JComponent {
 		this.spacePressed = newValue;
 	}
 	
+	public void restartBarrySteakfries() {
+		
+		this.barrySteakfries.restartPos();
+		
+	}
+	
 
 	@Override
 	protected void paintComponent(Graphics g) {

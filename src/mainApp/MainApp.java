@@ -20,16 +20,20 @@ import javax.swing.Timer;
  */
 public class MainApp {
 	
+	public MainApp() {
+		
+		
+		
+	}
 	
-	private static void runApp(String filename) throws FileNotFoundException, IOException {
+	
+	private static void runApp() throws FileNotFoundException, IOException {
 		System.out.println("Write your cool arcade game here!");
 		System.out.println("Testing");
-		
 		JFrame frame = new JFrame();
 		frame.setSize(1000, 400);
 		frame.setTitle("Jetpack Joyride");
-		System.out.println(filename);
-		Level level1 = new Level(filename);
+		Game game = new Game();
 		frame.addKeyListener(new KeyListener() {
 
 			@Override
@@ -41,22 +45,32 @@ public class MainApp {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					level1.setSpacePressed(true);
+				if (e.getKeyCode() == KeyEvent.VK_U) {
+					frame.remove(game.getCurrentLevel());
+					frame.setVisible(false);
+					game.goUpLevel();
+					frame.add(game.getCurrentLevel());
+					frame.setVisible(true);
+				} else if (e.getKeyCode() == KeyEvent.VK_D) {
+					frame.remove(game.getCurrentLevel());
+					frame.setVisible(false);
+					game.goBackLevel();
+					frame.add(game.getCurrentLevel());
+					frame.setVisible(true);
 				}
 			}
-
+			
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					level1.setSpacePressed(false);
+					//level.setSpacePressed(false);
 				}
 			}
 			
 		});
-		frame.add(level1);
-		
+		frame.add(game.getCurrentLevel());
+	/*	
 		Timer t = new Timer(50, new ActionListener() {
 
 			@Override
@@ -66,13 +80,17 @@ public class MainApp {
 				
 			}
 			public void advanceOneTick() {
-				level1.updateState();
-				level1.repaint();
+				level.updateState();
+				level.repaint();
 			}
 		});
+	
 		t.start();
+	*/
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
 		
 	} // runApp
 
@@ -81,13 +99,11 @@ public class MainApp {
 	 * @param args unused
 	 */
 	
-	
-	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		MainApp mainApp = new MainApp();
 		
 		try {
-			runApp("Level2.txt");
+			runApp();
 		} catch (FileNotFoundException e) {
 			System.err.println("File Not Found :(");
 		}
