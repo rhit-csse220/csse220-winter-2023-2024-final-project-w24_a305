@@ -27,7 +27,7 @@ public class MainApp {
 	}
 	
 	
-	private static void runApp() throws FileNotFoundException, IOException {
+	private static void runApp() throws FileNotFoundException, IOException, InvalidLevelFormat {
 		System.out.println("Write your cool arcade game here!");
 		System.out.println("Testing");
 		JFrame frame = new JFrame();
@@ -57,6 +57,8 @@ public class MainApp {
 					game.goBackLevel();
 					frame.add(game.getCurrentLevel());
 					frame.setVisible(true);
+				} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					game.getCurrentLevel().setSpacePressed(true);
 				}
 			}
 			
@@ -64,7 +66,7 @@ public class MainApp {
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					//level.setSpacePressed(false);
+					game.getCurrentLevel().setSpacePressed(false);
 				}
 			}
 			
@@ -106,6 +108,8 @@ public class MainApp {
 			runApp();
 		} catch (FileNotFoundException e) {
 			System.err.println("File Not Found :(");
+		} catch (InvalidLevelFormat e) {
+			System.err.println(e.getErrMessage());
 		}
 		
 		

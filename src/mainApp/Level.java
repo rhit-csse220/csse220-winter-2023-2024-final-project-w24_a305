@@ -23,7 +23,7 @@ public class Level extends JComponent {
 	private Hero barrySteakfries;
 	private boolean spacePressed;
 
-	public Level(String filename) throws FileNotFoundException, IOException {
+	public Level(String filename) throws FileNotFoundException, IOException, InvalidLevelFormat {
 		// This makes me mad >:(
 
 		// String normalBarrier = s.nextLine();
@@ -49,13 +49,29 @@ public class Level extends JComponent {
 
 	}
 
-	public void fileScanner(String filename) throws FileNotFoundException {
+	public void fileScanner(String filename) throws InvalidLevelFormat, IOException {
 		try {
-			FileReader f1 = new FileReader(filename);
-			Scanner s = new Scanner(f1);
-			createNormalBarriers(s.nextLine());
-			createElectricBarriers(s.nextLine());
-			createCoins(s.nextLine());
+			FileReader f = new FileReader(filename);
+			Scanner s = new Scanner(f);
+			
+			String[] currentLine = s.nextLine().split(",");
+			for (int i = 0; i < 2; i++) {
+				
+				if (currentLine.length % 3 != 0) {
+					throw new InvalidLevelFormat();
+				}
+				currentLine = s.nextLine().split(",");
+			}
+			if (currentLine.length % 2 != 0) {
+				throw new InvalidLevelFormat();
+			}
+			
+			FileReader f2 = new FileReader(filename);
+			Scanner s2 = new Scanner(f2);
+			
+			createNormalBarriers(s2.nextLine());
+			createElectricBarriers(s2.nextLine());
+			createCoins(s2.nextLine());
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
 		}

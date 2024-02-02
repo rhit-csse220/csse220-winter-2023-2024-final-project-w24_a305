@@ -3,8 +3,10 @@ package mainApp;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.Timer;
 
@@ -13,11 +15,22 @@ public class Game {
 	private ArrayList<Level> levels;
 	private Level currentLevel;
 
-	public Game() throws FileNotFoundException, IOException {
+	public Game() throws FileNotFoundException, IOException, InvalidLevelFormat {
 		
 		this.levels = new ArrayList<Level>();
-		this.levels.add(new Level("Level1.txt"));
-		this.levels.add(new Level("Level2.txt"));
+		
+		FileReader f = new FileReader("Level1.txt");
+		Scanner s = new Scanner(f);
+		
+		
+		try {
+			this.levels.add(new Level("Level1.txt"));
+			this.levels.add(new Level("Level2.txt"));
+		}catch (InvalidLevelFormat e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}
 		this.currentLevel = this.levels.get(0);
 		
 		update();
