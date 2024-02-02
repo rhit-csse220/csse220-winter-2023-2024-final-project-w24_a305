@@ -10,6 +10,13 @@ import java.util.Scanner;
 
 import javax.swing.Timer;
 
+
+/**
+ * Class: Game
+ * <br>Purpose: To store levels and initiate them. Has methods to swap between levels. Checks if files 
+ * are correctly formatted.
+ */
+
 public class Game {
 	
 	private ArrayList<Level> levels;
@@ -37,6 +44,10 @@ public class Game {
 		
 	}
 	
+	/**
+	 * Creates a timer to update the current level's components (Hero, Coin, Barrier, etc.)
+	 */
+	
 	public void update() {
 		Timer t = new Timer(50, new ActionListener() {
 
@@ -54,20 +65,28 @@ public class Game {
 		t.start();
 	}
 	
+	/**
+	 * Changes the current level to the one before it in the levels ArrayList.
+	 */
 	public void goBackLevel() {
 		if (this.levels.indexOf(this.currentLevel) > 0) {
 			this.currentLevel.restartBarrySteakfries();
 			this.currentLevel = this.levels.get(this.levels.indexOf(this.currentLevel) - 1);
 		}
 	}
-
+	/**
+	 * Changes the current level to the one after it in the levels ArrayList
+	 */
 	public void goUpLevel() {
 		if (this.levels.indexOf(this.currentLevel) < this.levels.size() - 1) {
 			this.currentLevel.restartBarrySteakfries();
 			this.currentLevel = this.levels.get(this.levels.indexOf(this.currentLevel) + 1);
 		}
 	}
-	
+	/**
+	 * Returns the current level
+	 * @return this.currentLevel
+	 */
 	public Level getCurrentLevel() {
 		return this.currentLevel;
 	}
