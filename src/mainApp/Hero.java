@@ -44,4 +44,9 @@ public class Hero {
 		this.y += y;
 	}
 	
+	public void restartPos() {
+		this.x = startingX;
+		this.y = startingY;
+	}
+	
 }
