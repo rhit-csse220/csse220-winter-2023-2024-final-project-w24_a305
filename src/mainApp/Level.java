@@ -19,7 +19,7 @@ import javax.swing.JComponent;
  * Class: Level. Extends JComponent
  * 
  * <br>
- * Pupose: Create the level and instantiate all the barriers, coins, and player
+ * Pupose: Create the level and instantiate all the barriers, coins, missiles, and player
  * character.
  */
 public class Level extends JComponent {
@@ -28,6 +28,7 @@ public class Level extends JComponent {
 	private ArrayList<Barrier> electricBarrierList;
 	private ArrayList<Coin> coinList;
 	private ArrayList<Missile> normalMissileList;
+	private ArrayList<Missile> trackingMissileList;
 	private Hero barrySteakfries;
 	private boolean spacePressed;
 
@@ -43,6 +44,7 @@ public class Level extends JComponent {
 		this.electricBarrierList = new ArrayList<Barrier>();
 		this.coinList = new ArrayList<Coin>();
 		this.normalMissileList = new ArrayList<Missile>();
+		this.trackingMissileList = new ArrayList<Missile>();
 		this.barrySteakfries = new Hero();
 		this.spacePressed = false;
 		fileScanner(filename);
@@ -55,8 +57,8 @@ public class Level extends JComponent {
 	}
 
 	/**
-	 * Takes in the current file name and reads each line to create the barriers and
-	 * coins. Checks if file is correctly formatted. If not, throws an
+	 * Takes in the current file name and reads each line to create the barriers,
+	 * coins, and missiles. Checks if file is correctly formatted. If not, throws an
 	 * InvalidLevelFormat Exception. If the file is not found, throws a
 	 * FileNotFoundException.
 	 * 
@@ -88,6 +90,7 @@ public class Level extends JComponent {
 			createElectricBarriers(s2.nextLine());
 			createCoins(s2.nextLine());
 			createNormalMissiles(s2.nextLine());
+			createTrackingMissiles(s2.nextLine());
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
 		}
@@ -249,7 +252,12 @@ public class Level extends JComponent {
 		}
 
 	}
-
+	
+	/**
+	 * Creates normal missiles from a String that contains a list of x & y coordinates.
+	 * 
+	 * @param normalMissilesParam
+	 */
 	public void createNormalMissiles(String normalMissilesParam) {
 
 		String[] coordinates = normalMissilesParam.split(",");
@@ -282,10 +290,48 @@ public class Level extends JComponent {
 		}
 
 	}
+	
+	/**
+	 * Creates tracking missiles from a String that contains a list of x & y coordinates.
+	 * 
+	 * @param trackingMissilesParam
+	 */
+	public void createTrackingMissiles(String trackingMissilesParam) {
+
+		String[] coordinates = trackingMissilesParam.split(",");
+
+		String x = "";
+		String y = "";
+		int numOfMissiles = coordinates.length / 2;
+
+		for (int j = 0; j < numOfMissiles; j++) {
+
+			String[] sub = new String[2];
+			sub[0] = coordinates[j * 2];
+			sub[1] = coordinates[j * 2 + 1];
+
+			for (int i = 0; i < 3; i++) {
+
+				if (i == 0) {
+					x = sub[i];
+				} else if (i == 1) {
+					y = sub[i];
+				}
+			}
+
+			int xCoord = Integer.parseInt(x);
+			int yCoord = Integer.parseInt(y);
+
+			Missile missile = new TrackingMissile(xCoord, yCoord);
+
+			this.trackingMissileList.add(missile);
+		}
+
+	}
 
 	/**
 	 * Changes Barry's x & y values depending on the current state of the game or
-	 * key pressed.
+	 * key pressed. Also alters the locations of the missiles
 	 */
 	public void updateState() {
 
@@ -294,14 +340,34 @@ public class Level extends JComponent {
 		}
 		if (this.barrySteakfries.getY() < 340 && !this.spacePressed) {
 			this.barrySteakfries.setGravity(1);
-			this.barrySteakfries.setY(this.barrySteakfries.getGravity() * 0.6);
+			this.barrySteakfries.setY(-7 + this.barrySteakfries.getGravity());
+
 		}
 		if (this.barrySteakfries.getY() > 0 && this.spacePressed) {
 			this.barrySteakfries.setGravity(-1 * this.barrySteakfries.getGravity());
 			this.barrySteakfries.setY(-7);
+
 		}
-		for (Missile missile: this.normalMissileList) {
-			missile.setX(7);
+		if (this.barrySteakfries.getY() == 0) {
+			this.barrySteakfries.setY(0);
+		}
+		if (this.barrySteakfries.getY() < 0) {
+			this.barrySteakfries.setY(-this.barrySteakfries.getY());
+		}
+
+		for (Missile missile : this.normalMissileList) {
+			missile.setX(14);
+		}
+
+		for (Missile missile : this.trackingMissileList) {
+			missile.setX(14);
+			if (missile.getX() > this.barrySteakfries.getX()) {
+				if (missile.getY() < this.barrySteakfries.getY()) {
+					missile.setY(3);
+				} else if (missile.getY() > this.barrySteakfries.getY()) {
+					missile.setY(-3);
+				}
+			}
 		}
 
 	}
@@ -348,8 +414,12 @@ public class Level extends JComponent {
 			currentCoin.drawOn(g2);
 		}
 		this.barrySteakfries.drawOn(g2);
-		
+
 		for (Missile missile : this.normalMissileList) {
+			missile.drawOn(g2);
+		}
+
+		for (Missile missile : this.trackingMissileList) {
 			missile.drawOn(g2);
 		}
 
