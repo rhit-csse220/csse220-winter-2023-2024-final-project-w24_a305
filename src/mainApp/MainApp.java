@@ -14,8 +14,9 @@ import javax.swing.Timer;
 
 /**
  * Class: MainApp
- * @author Put your team name here
- * <br>Purpose: Top level class for CSSE220 Project containing main method 
+ * @author W24_A305
+ * <br>Purpose: Top level class for CSSE220 Project containing main method.
+ * 				Creates frame & the Game class. Also handles all the key listeners.
  * <br>Restrictions: None
  */
 public class MainApp {
@@ -25,7 +26,14 @@ public class MainApp {
 		
 		
 	}
-	
+	/**
+	 * 
+	 * Initializes frame & game. handles key listeners. Moves up and down levels and causes Barry Steakfries to fly up.
+	 * 
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws InvalidLevelFormat
+	 */
 	
 	private static void runApp() throws FileNotFoundException, IOException, InvalidLevelFormat {
 		System.out.println("Write your cool arcade game here!");

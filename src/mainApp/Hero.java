@@ -3,6 +3,11 @@ package mainApp;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+
+/**
+ * class: Hero
+ * <br>Purpose: Create a hero on the screen that can move vertically and horizontally.
+ */
 public class Hero {
 
 	public static final int startingX = 10;
@@ -19,7 +24,10 @@ public class Hero {
 		this.y = startingY;
 		
 	}
-	
+	/**
+	 *Ensures Hero is drawn on the screen when called in Level.
+	 * @param g2
+	 */
 	public void drawOn(Graphics2D g2) {
 		
 		g2.setColor(color);
@@ -27,23 +35,37 @@ public class Hero {
 		g2.fillRect(this.x, this.y, 10, 20);
 		
 	}
-	
+	/**
+	 * Returns the Hero's current x-value.
+	 * @return this.x
+	 */
 	public int getX() {
 		return this.x;
 	}
-	
+	/**
+	 * Changes the Hero's x-value by the param's amount.
+	 * @param x
+	 */
 	public void setX(int x) {
 		this.x += x;
 	}
-	
+	/**
+	 * Returns the Hero's current y-value
+	 * @return this.y
+	 */
 	public int getY() {
 		return this.y;
 	}
-	
+	/**
+	 * Changes the Hero's y-value by the param's amount.
+	 * @param y
+	 */
 	public void setY(int y) {
 		this.y += y;
 	}
-	
+	/**
+	 * Resets the Hero's x & y values to their starting values.
+	 */
 	public void restartPos() {
 		this.x = startingX;
 		this.y = startingY;

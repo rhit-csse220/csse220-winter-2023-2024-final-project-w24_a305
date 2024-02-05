@@ -15,6 +15,12 @@ import java.util.Scanner;
 
 import javax.swing.JComponent;
 
+
+/**
+ * Class: Level. Extends JComponent
+ * 
+ * <br>Pupose: Create the level and instantiate all the barriers, coins, and player character.
+ */
 public class Level extends JComponent {
 
 	private ArrayList<Barrier> normalBarrierList;
@@ -48,7 +54,13 @@ public class Level extends JComponent {
 		// f1.close();
 
 	}
-
+	/**
+	 * Takes in the current file name and reads each line to create the barriers and coins. Checks if file is correctly formatted.
+	 * If not, throws an InvalidLevelFormat Exception. If the file is not found, throws a FileNotFoundException.
+	 * @param filename
+	 * @throws InvalidLevelFormat
+	 * @throws IOException
+	 */
 	public void fileScanner(String filename) throws InvalidLevelFormat, IOException {
 		try {
 			FileReader f = new FileReader(filename);
@@ -79,7 +91,12 @@ public class Level extends JComponent {
 		// System.out.println(filename);
 
 	}
-
+	/**
+	 * Creates the Normal Barriers by taking in a string with x & y coordinates and a rotation angle. The coordinates
+	 * are for the top-right point of the rectangle. Calculates the other 3 points using trig with the given rotation
+	 * angle and draws a Polygon using a java list of the x and y coordinates of each point.
+	 * @param normalBarrierParam
+	 */
 	public void createNormalBarriers(String normalBarrierParam) {
 
 		// ArrayList<Polygon> normalBarriers = new ArrayList<Polygon>();
@@ -133,7 +150,12 @@ public class Level extends JComponent {
 		// normalBarriers.add(normalBarrier);
 		// return normalBarriers;
 	}
-
+	/**
+	 * Creates the Electric Barriers by taking in a string with x & y coordinates and a rotation angle. The coordinates
+	 * are for the top-right point of the rectangle. Calculates the other 3 points using trig with the given rotation
+	 * angle and draws a Polygon using a java list of the x and y coordinates of each point.
+	 * @param electricBarrierParam
+	 */
 	public void createElectricBarriers(String electricBarrierParam) {
 		String[] coordinates = electricBarrierParam.split(",");
 
@@ -177,7 +199,10 @@ public class Level extends JComponent {
 			this.electricBarrierList.add(electricBarrier);
 		}
 	}
-	
+	/**
+	 * Creates coins from a String that contains a list of x & y coordinates. 
+	 * @param coinParam
+	 */
 	public void createCoins(String coinParam) {
 		
 		String[] coordinates = coinParam.split(",");
@@ -211,9 +236,10 @@ public class Level extends JComponent {
 		
 	}
 	
+	/**
+	 * Changes Barry's x & y values depending on the current state of the game or key pressed.
+	 */
 	public void updateState() {
-		
-		
 		
 		if (this.barrySteakfries.getX() < 960) {
 			this.barrySteakfries.setX(10);
@@ -223,18 +249,27 @@ public class Level extends JComponent {
 		}
 		
 	}
-	
+	/**
+	 * Takes in a boolean value to check if the space bar has been pressed.
+	 * @param newValue
+	 */
 	public void setSpacePressed(boolean newValue) {
 		this.spacePressed = newValue;
 	}
 	
+	/**
+	 * Restarts Barry's position on the screen. This is done when switching between levels.
+	 */
 	public void restartBarrySteakfries() {
 		
 		this.barrySteakfries.restartPos();
 		
 	}
 	
-
+	/**
+	 * Draws everything
+	 * @param g
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
