@@ -17,11 +17,13 @@ public class Hero {
 	public static final Color color = Color.BLUE;
 	private int x;
 	private int y;
+	private int gravity;
 	
 	
 	public Hero() {
 		this.x = startingX;
 		this.y = startingY;
+		this.gravity = 0;
 		
 	}
 	/**
@@ -60,7 +62,7 @@ public class Hero {
 	 * Changes the Hero's y-value by the param's amount.
 	 * @param y
 	 */
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y += y;
 	}
 	/**
@@ -69,6 +71,14 @@ public class Hero {
 	public void restartPos() {
 		this.x = startingX;
 		this.y = startingY;
+	}
+	
+	public double getGravity() {
+		return this.gravity;
+	}
+	
+	public void setGravity(double value) {
+		this.gravity += value;
 	}
 	
 }

@@ -15,17 +15,19 @@ import java.util.Scanner;
 
 import javax.swing.JComponent;
 
-
 /**
  * Class: Level. Extends JComponent
  * 
- * <br>Pupose: Create the level and instantiate all the barriers, coins, and player character.
+ * <br>
+ * Pupose: Create the level and instantiate all the barriers, coins, and player
+ * character.
  */
 public class Level extends JComponent {
 
 	private ArrayList<Barrier> normalBarrierList;
 	private ArrayList<Barrier> electricBarrierList;
 	private ArrayList<Coin> coinList;
+	private ArrayList<Missile> normalMissileList;
 	private Hero barrySteakfries;
 	private boolean spacePressed;
 
@@ -35,18 +37,15 @@ public class Level extends JComponent {
 		// String normalBarrier = s.nextLine();
 		// String electricBarrier = s.nextLine();
 		// String coins = s.nextLine();
-		
-		
 
 		this.normalBarrierList = new ArrayList<Barrier>();
 		// System.out.println(this.normalBarrierList);
 		this.electricBarrierList = new ArrayList<Barrier>();
 		this.coinList = new ArrayList<Coin>();
+		this.normalMissileList = new ArrayList<Missile>();
 		this.barrySteakfries = new Hero();
 		this.spacePressed = false;
 		fileScanner(filename);
-		
-		
 
 		// createNormalBarriers(normalBarrier);
 
@@ -54,9 +53,13 @@ public class Level extends JComponent {
 		// f1.close();
 
 	}
+
 	/**
-	 * Takes in the current file name and reads each line to create the barriers and coins. Checks if file is correctly formatted.
-	 * If not, throws an InvalidLevelFormat Exception. If the file is not found, throws a FileNotFoundException.
+	 * Takes in the current file name and reads each line to create the barriers and
+	 * coins. Checks if file is correctly formatted. If not, throws an
+	 * InvalidLevelFormat Exception. If the file is not found, throws a
+	 * FileNotFoundException.
+	 * 
 	 * @param filename
 	 * @throws InvalidLevelFormat
 	 * @throws IOException
@@ -65,10 +68,10 @@ public class Level extends JComponent {
 		try {
 			FileReader f = new FileReader(filename);
 			Scanner s = new Scanner(f);
-			
+
 			String[] currentLine = s.nextLine().split(",");
 			for (int i = 0; i < 2; i++) {
-				
+
 				if (currentLine.length % 3 != 0) {
 					throw new InvalidLevelFormat();
 				}
@@ -77,13 +80,14 @@ public class Level extends JComponent {
 			if (currentLine.length % 2 != 0) {
 				throw new InvalidLevelFormat();
 			}
-			
+
 			FileReader f2 = new FileReader(filename);
 			Scanner s2 = new Scanner(f2);
-			
+
 			createNormalBarriers(s2.nextLine());
 			createElectricBarriers(s2.nextLine());
 			createCoins(s2.nextLine());
+			createNormalMissiles(s2.nextLine());
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
 		}
@@ -91,10 +95,14 @@ public class Level extends JComponent {
 		// System.out.println(filename);
 
 	}
+
 	/**
-	 * Creates the Normal Barriers by taking in a string with x & y coordinates and a rotation angle. The coordinates
-	 * are for the top-right point of the rectangle. Calculates the other 3 points using trig with the given rotation
-	 * angle and draws a Polygon using a java list of the x and y coordinates of each point.
+	 * Creates the Normal Barriers by taking in a string with x & y coordinates and
+	 * a rotation angle. The coordinates are for the top-right point of the
+	 * rectangle. Calculates the other 3 points using trig with the given rotation
+	 * angle and draws a Polygon using a java list of the x and y coordinates of
+	 * each point.
+	 * 
 	 * @param normalBarrierParam
 	 */
 	public void createNormalBarriers(String normalBarrierParam) {
@@ -150,10 +158,14 @@ public class Level extends JComponent {
 		// normalBarriers.add(normalBarrier);
 		// return normalBarriers;
 	}
+
 	/**
-	 * Creates the Electric Barriers by taking in a string with x & y coordinates and a rotation angle. The coordinates
-	 * are for the top-right point of the rectangle. Calculates the other 3 points using trig with the given rotation
-	 * angle and draws a Polygon using a java list of the x and y coordinates of each point.
+	 * Creates the Electric Barriers by taking in a string with x & y coordinates
+	 * and a rotation angle. The coordinates are for the top-right point of the
+	 * rectangle. Calculates the other 3 points using trig with the given rotation
+	 * angle and draws a Polygon using a java list of the x and y coordinates of
+	 * each point.
+	 * 
 	 * @param electricBarrierParam
 	 */
 	public void createElectricBarriers(String electricBarrierParam) {
@@ -199,12 +211,14 @@ public class Level extends JComponent {
 			this.electricBarrierList.add(electricBarrier);
 		}
 	}
+
 	/**
-	 * Creates coins from a String that contains a list of x & y coordinates. 
+	 * Creates coins from a String that contains a list of x & y coordinates.
+	 * 
 	 * @param coinParam
 	 */
 	public void createCoins(String coinParam) {
-		
+
 		String[] coordinates = coinParam.split(",");
 
 		String x = "";
@@ -225,49 +239,98 @@ public class Level extends JComponent {
 					y = sub[i];
 				}
 			}
-			
+
 			int xCoord = Integer.parseInt(x);
 			int yCoord = Integer.parseInt(y);
-			
+
 			Coin coin = new Coin(xCoord, yCoord);
-			
+
 			this.coinList.add(coin);
 		}
-		
+
 	}
-	
+
+	public void createNormalMissiles(String normalMissilesParam) {
+
+		String[] coordinates = normalMissilesParam.split(",");
+
+		String x = "";
+		String y = "";
+		int numOfMissiles = coordinates.length / 2;
+
+		for (int j = 0; j < numOfMissiles; j++) {
+
+			String[] sub = new String[2];
+			sub[0] = coordinates[j * 2];
+			sub[1] = coordinates[j * 2 + 1];
+
+			for (int i = 0; i < 3; i++) {
+
+				if (i == 0) {
+					x = sub[i];
+				} else if (i == 1) {
+					y = sub[i];
+				}
+			}
+
+			int xCoord = Integer.parseInt(x);
+			int yCoord = Integer.parseInt(y);
+
+			Missile missile = new NormalMissile(xCoord, yCoord);
+
+			this.normalMissileList.add(missile);
+		}
+
+	}
+
 	/**
-	 * Changes Barry's x & y values depending on the current state of the game or key pressed.
+	 * Changes Barry's x & y values depending on the current state of the game or
+	 * key pressed.
 	 */
 	public void updateState() {
-		
+
 		if (this.barrySteakfries.getX() < 960) {
-			this.barrySteakfries.setX(10);
+			this.barrySteakfries.setX(7);
+		}
+		if (this.barrySteakfries.getY() < 340 && !this.spacePressed) {
+			this.barrySteakfries.setGravity(1);
+			this.barrySteakfries.setY(this.barrySteakfries.getGravity() * 0.6);
 		}
 		if (this.barrySteakfries.getY() > 0 && this.spacePressed) {
-			this.barrySteakfries.setY(-4);
+			this.barrySteakfries.setGravity(-1 * this.barrySteakfries.getGravity());
+			this.barrySteakfries.setY(-7);
 		}
-		
+		for (Missile missile: this.normalMissileList) {
+			missile.setX(7);
+		}
+
 	}
+
 	/**
 	 * Takes in a boolean value to check if the space bar has been pressed.
+	 * 
 	 * @param newValue
 	 */
 	public void setSpacePressed(boolean newValue) {
 		this.spacePressed = newValue;
 	}
-	
+
 	/**
-	 * Restarts Barry's position on the screen. This is done when switching between levels.
+	 * Restarts Barry's position on the screen. This is done when switching between
+	 * levels.
 	 */
-	public void restartBarrySteakfries() {
-		
+	public void restart() {
+
 		this.barrySteakfries.restartPos();
-		
+		for (Missile missile : this.normalMissileList) {
+			missile.restartPos();
+		}
+
 	}
-	
+
 	/**
 	 * Draws everything
+	 * 
 	 * @param g
 	 */
 	@Override
@@ -286,7 +349,9 @@ public class Level extends JComponent {
 		}
 		this.barrySteakfries.drawOn(g2);
 		
-		
+		for (Missile missile : this.normalMissileList) {
+			missile.drawOn(g2);
+		}
 
 	}
 

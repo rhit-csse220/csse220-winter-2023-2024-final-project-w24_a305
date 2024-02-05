@@ -70,7 +70,7 @@ public class Game {
 	 */
 	public void goBackLevel() {
 		if (this.levels.indexOf(this.currentLevel) > 0) {
-			this.currentLevel.restartBarrySteakfries();
+			this.currentLevel.restart();
 			this.currentLevel = this.levels.get(this.levels.indexOf(this.currentLevel) - 1);
 		}
 	}
@@ -79,7 +79,7 @@ public class Game {
 	 */
 	public void goUpLevel() {
 		if (this.levels.indexOf(this.currentLevel) < this.levels.size() - 1) {
-			this.currentLevel.restartBarrySteakfries();
+			this.currentLevel.restart();
 			this.currentLevel = this.levels.get(this.levels.indexOf(this.currentLevel) + 1);
 		}
 	}
