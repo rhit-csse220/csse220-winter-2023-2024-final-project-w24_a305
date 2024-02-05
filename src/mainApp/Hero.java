@@ -71,12 +71,19 @@ public class Hero {
 	public void restartPos() {
 		this.x = startingX;
 		this.y = startingY;
+		this.gravity = 0;
 	}
-	
+	/**
+	 * Returns the gravity value for the hero
+	 * @return this.gravity
+	 */
 	public double getGravity() {
 		return this.gravity;
 	}
-	
+	/**
+	 * Changes the gravity value by the set amount
+	 * @param value
+	 */
 	public void setGravity(double value) {
 		this.gravity += value;
 	}
