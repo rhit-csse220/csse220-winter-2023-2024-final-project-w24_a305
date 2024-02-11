@@ -1,6 +1,7 @@
 package mainApp;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 /**
  * Class: TrackingMissile
  * <br>Purpose: Creates a missile that moves horizontally, as well as vertically to track the hero.
@@ -11,27 +12,12 @@ public class TrackingMissile extends Missile {
 		super(xCoord, yCoord, Color.DARK_GRAY);
 	}
 
-	@Override
-	public void collideCoin(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
-	public void collideMissile(Hero h) {
+	public boolean collideWith(Hero r) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
-	@Override
-	public void collideBarrier(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void collideWith(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

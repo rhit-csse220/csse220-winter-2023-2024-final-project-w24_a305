@@ -109,8 +109,6 @@ public class Level extends JComponent {
 	 * @param normalBarrierParam
 	 */
 	
-	public void create
-	
 	
 	
 	public void createNormalBarriers(String normalBarrierParam) {
@@ -358,13 +356,17 @@ public class Level extends JComponent {
 		if (this.barrySteakfries.getY() < 0) {
 			this.barrySteakfries.setY(-this.barrySteakfries.getY());
 		}
+		for (Coin coin: this.coinList) {
+			if(coin.collideWith(this.barrySteakfries)) {
+				this.barrySteakfries.setCoins(1);
+				System.out.println("You have " + this.barrySteakfries.getCoins() + " coins.");
+				coin.setCollected(true);
+				coin.moveRectLoc(1500);
+			}
+		}
 
 		for (Missile missile : this.normalMissileList) {
 			missile.setX(14);
-			if (missile.checkCollision(this.barrySteakfries)) {
-				this.barrySteakfries.setHealth(-1);
-				System.out.println(this.barrySteakfries.getHealth());
-			}
 			
 		}
 
@@ -376,10 +378,6 @@ public class Level extends JComponent {
 				} else if (missile.getY() > this.barrySteakfries.getY()) {
 					missile.setY(-3);
 				}
-			}
-			if (missile.checkCollision(this.barrySteakfries)) {
-				this.barrySteakfries.setHealth(-1);
-				System.out.println(this.barrySteakfries.getHealth());
 			}
 		}
 
@@ -407,6 +405,10 @@ public class Level extends JComponent {
 		for (Missile missile: this.trackingMissileList) {
 			missile.restartPos();
 		}
+		for (Coin coin : this.coinList) {
+			coin.setCollected(false);
+			coin.moveRectLoc(coin.getX());
+		}
 		
 
 	}
@@ -428,7 +430,9 @@ public class Level extends JComponent {
 			currentBarrier.drawOn(g2);
 		}
 		for (Coin currentCoin : this.coinList) {
-			currentCoin.drawOn(g2);
+			if(!currentCoin.isCollected()) {
+				currentCoin.drawOn(g2);
+			}
 		}
 		this.barrySteakfries.drawOn(g2);
 

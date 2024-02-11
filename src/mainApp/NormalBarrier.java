@@ -1,6 +1,7 @@
 package mainApp;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 /**
  * Class: NormalBarrier
@@ -15,28 +16,12 @@ public class NormalBarrier extends Barrier {
 	}
 
 	@Override
-	public void collideCoin(Hero h) {
+	public boolean collideWith(Hero r) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
-	@Override
-	public void collideMissile(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void collideBarrier(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void collideWith(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	
 	

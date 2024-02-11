@@ -16,12 +16,14 @@ public class Coin implements Collision{
 	private int x;
 	private int y;
 	private Rectangle rect;
+	private boolean collected;
 	
 	public Coin(int x, int y) {
 		
 		this.x = x;
 		this.y = y;
 		this.rect = new Rectangle(this.x,this.y,diameter,diameter);
+		collected = false;
 	}
 	
 	/**
@@ -35,29 +37,29 @@ public class Coin implements Collision{
 		
 	}
 
-	@Override
-	public void collideCoin(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
-	public void collideMissile(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void collideBarrier(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean collideWith(Rectangle r) {
-		if (this.rect.intersects(r)) {
+	public boolean collideWith(Hero r) {
+		if (this.rect.intersects(r.getRect())) {
 			return true;
 		}
+		return false;
+	}
+
+	public boolean isCollected() {
+		return collected;
+	}
+
+	public void setCollected(boolean collected) {
+		this.collected = collected;
+	}
+	
+	public void moveRectLoc(int x) {
+		this.rect.x = x;
+	}
+	
+	public int getX() {
+		return this.x;
 	}
 	
 }

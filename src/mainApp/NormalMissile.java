@@ -1,6 +1,7 @@
 package mainApp;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 /**
  * Class: NormalMissile
  * <br>Purpose: Creates a missile that can only move horizontally
@@ -12,29 +13,14 @@ public class NormalMissile extends Missile {
 		super(xCoord, yCoord, Color.MAGENTA);
 	}
 
-	@Override
-	public void collideCoin(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
-	public void collideMissile(Hero h) {
+	public boolean collideWith(Hero r) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
-	@Override
-	public void collideBarrier(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void collideWith(Hero h) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	
 	

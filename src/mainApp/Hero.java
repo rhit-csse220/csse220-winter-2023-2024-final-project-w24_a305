@@ -81,6 +81,8 @@ public class Hero {
 	public void restartPos() {
 		this.x = startingX;
 		this.y = startingY;
+		this.rect.x = startingX;
+		this.rect.y = startingY;
 		this.gravity = 0;
 	}
 	/**
@@ -109,7 +111,9 @@ public class Hero {
 	public void setCoins(int coins) {
 		this.coins += coins;
 	}
-	
+	public Rectangle getRect() {
+		return rect;
+	}
 	
 	
 }
