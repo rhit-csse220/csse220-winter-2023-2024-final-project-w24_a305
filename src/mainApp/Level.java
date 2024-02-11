@@ -19,8 +19,8 @@ import javax.swing.JComponent;
  * Class: Level. Extends JComponent
  * 
  * <br>
- * Pupose: Create the level and instantiate all the barriers, coins, missiles, and player
- * character.
+ * Pupose: Create the level and instantiate all the barriers, coins, missiles,
+ * and player character.
  */
 public class Level extends JComponent {
 
@@ -31,6 +31,7 @@ public class Level extends JComponent {
 	private ArrayList<Missile> trackingMissileList;
 	private Hero barrySteakfries;
 	private boolean spacePressed;
+	private boolean gameOver;
 
 	public Level(String filename) throws FileNotFoundException, IOException, InvalidLevelFormat {
 		// This makes me mad >:(
@@ -48,6 +49,7 @@ public class Level extends JComponent {
 		this.barrySteakfries = new Hero();
 		this.spacePressed = false;
 		fileScanner(filename);
+		gameOver = false;
 
 		// createNormalBarriers(normalBarrier);
 
@@ -108,9 +110,7 @@ public class Level extends JComponent {
 	 * 
 	 * @param normalBarrierParam
 	 */
-	
-	
-	
+
 	public void createNormalBarriers(String normalBarrierParam) {
 
 		// ArrayList<Polygon> normalBarriers = new ArrayList<Polygon>();
@@ -255,9 +255,10 @@ public class Level extends JComponent {
 		}
 
 	}
-	
+
 	/**
-	 * Creates normal missiles from a String that contains a list of x & y coordinates.
+	 * Creates normal missiles from a String that contains a list of x & y
+	 * coordinates.
 	 * 
 	 * @param normalMissilesParam
 	 */
@@ -292,9 +293,10 @@ public class Level extends JComponent {
 		}
 
 	}
-	
+
 	/**
-	 * Creates tracking missiles from a String that contains a list of x & y coordinates.
+	 * Creates tracking missiles from a String that contains a list of x & y
+	 * coordinates.
 	 * 
 	 * @param trackingMissilesParam
 	 */
@@ -356,18 +358,65 @@ public class Level extends JComponent {
 		if (this.barrySteakfries.getY() < 0) {
 			this.barrySteakfries.setY(-this.barrySteakfries.getY());
 		}
-		for (Coin coin: this.coinList) {
-			if(coin.collideWith(this.barrySteakfries)) {
+		for (Coin coin : this.coinList) {
+			if (coin.collideWith(this.barrySteakfries)) {
 				this.barrySteakfries.setCoins(1);
 				System.out.println("You have " + this.barrySteakfries.getCoins() + " coins.");
 				coin.setCollected(true);
 				coin.moveRectLoc(1500);
 			}
 		}
-
+		
+		for (Barrier barrier : this.normalBarrierList) {
+			if(barrier.collideWith(this.barrySteakfries)) {
+				if(this.barrySteakfries.getX() + 9  < barrier.getXFromLeft() ) {
+					this.barrySteakfries.setX(-7);
+				}
+				else if(this.barrySteakfries.getY()  < barrier.getTopY()) {
+					this.barrySteakfries.setY(7 - this.barrySteakfries.getGravity());
+					this.barrySteakfries.setGravity(7 -this.barrySteakfries.getGravity());
+					
+				}
+				else {
+					System.out.println("d");
+					this.barrySteakfries.setY(7);
+				}
+			}
+		}
+		
+		for (Barrier barrier: this.electricBarrierList) {
+			if (barrier.collideWith(this.barrySteakfries)) {
+				this.barrySteakfries.setHealth(-1);
+				
+				if (this.barrySteakfries.getHealth() == 0) {
+					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
+					this.gameOver = true;
+					System.out.println("Game Over!!!");
+				} else if(this.barrySteakfries.getHealth() > 0) {
+					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
+					restart();
+				}
+			}
+		}
+		
 		for (Missile missile : this.normalMissileList) {
 			missile.setX(14);
-			
+			if (missile.collideWith(this.barrySteakfries)) {
+				this.barrySteakfries.setHealth(-1);
+				
+				if (this.barrySteakfries.getHealth() == 0) {
+					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
+					this.gameOver = true;
+					System.out.println("Game Over!!!");
+				} else {
+					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
+					restart();
+				}
+			}
+			if (missile.getX() < -50) {
+				missile.restartPos();
+			}
+
 		}
 
 		for (Missile missile : this.trackingMissileList) {
@@ -378,6 +427,20 @@ public class Level extends JComponent {
 				} else if (missile.getY() > this.barrySteakfries.getY()) {
 					missile.setY(-3);
 				}
+			}
+			if (missile.collideWith(this.barrySteakfries)) {
+				this.barrySteakfries.setHealth(-1);
+				if (this.barrySteakfries.getHealth() == 0) {
+					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
+					this.gameOver = true;
+					System.out.println("Game Over!!!");
+				} else {
+					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
+					restart();
+				}
+			}
+			if (missile.getX() < -50) {
+				missile.restartPos();
 			}
 		}
 
@@ -402,14 +465,13 @@ public class Level extends JComponent {
 		for (Missile missile : this.normalMissileList) {
 			missile.restartPos();
 		}
-		for (Missile missile: this.trackingMissileList) {
+		for (Missile missile : this.trackingMissileList) {
 			missile.restartPos();
 		}
 		for (Coin coin : this.coinList) {
 			coin.setCollected(false);
 			coin.moveRectLoc(coin.getX());
 		}
-		
 
 	}
 
@@ -430,7 +492,7 @@ public class Level extends JComponent {
 			currentBarrier.drawOn(g2);
 		}
 		for (Coin currentCoin : this.coinList) {
-			if(!currentCoin.isCollected()) {
+			if (!currentCoin.isCollected()) {
 				currentCoin.drawOn(g2);
 			}
 		}
@@ -444,6 +506,10 @@ public class Level extends JComponent {
 			missile.drawOn(g2);
 		}
 
+	}
+	
+	public boolean getGameOver(){
+		return this.gameOver;
 	}
 
 }

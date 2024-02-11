@@ -16,7 +16,9 @@ public class NormalMissile extends Missile {
 
 	@Override
 	public boolean collideWith(Hero r) {
-		// TODO Auto-generated method stub
+		if (this.rect.intersects(r.getRect())) {
+			return true;
+		}
 		return false;
 	}
 

@@ -3,6 +3,7 @@ package mainApp;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 /**
  * Class: Missile
@@ -13,13 +14,17 @@ public abstract class Missile implements Collision {
 	private int xCoord;
 	private int yCoord;
 	private Color color;
+	private int startingY;
 	private int startingX;
+	protected Rectangle rect;
 	
 	public Missile (int xCoord, int yCoord, Color color) {
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
 		this.color = color;
 		this.startingX = xCoord;
+		this.startingY = yCoord;
+		this.rect = new Rectangle(xCoord,yCoord,50,20);
 	}
 	
 	/**
@@ -39,7 +44,8 @@ public abstract class Missile implements Collision {
 	 * @param value
 	 */
 	public void setX(int value) {
-		this.xCoord -= value; 
+		this.xCoord -= value;
+		this.rect.x -= value;
 	}
 	/**
 	 * Returns the x value for the missile.
@@ -61,12 +67,16 @@ public abstract class Missile implements Collision {
 	 */
 	public void setY(int value) {
 		this.yCoord += value;
+		this.rect.y += value;
 	}
 	/**
 	 * Sets the missile x position to its original value when changing a level.
 	 */
 	public void restartPos() {
 		this.xCoord = this.startingX;
+		this.yCoord = this.startingY;
+		this.rect.x = this.startingX;
+		this.rect.y = this.startingY;
 	}
 	
 }
