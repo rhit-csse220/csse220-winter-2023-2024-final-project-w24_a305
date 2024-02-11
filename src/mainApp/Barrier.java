@@ -8,7 +8,7 @@ import java.awt.Polygon;
  * <br>Purpose: Makes it easier to write code for Normal and Electric Barrier since they share so many things
  * in common. 
  */
-public abstract class Barrier {
+public abstract class Barrier implements Collision {
 
 	private int[] xCoords;
 	private int[] yCoords;
@@ -33,5 +33,7 @@ public abstract class Barrier {
 		g2.fill(barrier);
 		
 	}
+	
+	
 	
 }

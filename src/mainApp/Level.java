@@ -108,6 +108,11 @@ public class Level extends JComponent {
 	 * 
 	 * @param normalBarrierParam
 	 */
+	
+	public void create
+	
+	
+	
 	public void createNormalBarriers(String normalBarrierParam) {
 
 		// ArrayList<Polygon> normalBarriers = new ArrayList<Polygon>();
@@ -285,7 +290,6 @@ public class Level extends JComponent {
 			int yCoord = Integer.parseInt(y);
 
 			Missile missile = new NormalMissile(xCoord, yCoord);
-
 			this.normalMissileList.add(missile);
 		}
 
@@ -357,6 +361,11 @@ public class Level extends JComponent {
 
 		for (Missile missile : this.normalMissileList) {
 			missile.setX(14);
+			if (missile.checkCollision(this.barrySteakfries)) {
+				this.barrySteakfries.setHealth(-1);
+				System.out.println(this.barrySteakfries.getHealth());
+			}
+			
 		}
 
 		for (Missile missile : this.trackingMissileList) {
@@ -367,6 +376,10 @@ public class Level extends JComponent {
 				} else if (missile.getY() > this.barrySteakfries.getY()) {
 					missile.setY(-3);
 				}
+			}
+			if (missile.checkCollision(this.barrySteakfries)) {
+				this.barrySteakfries.setHealth(-1);
+				System.out.println(this.barrySteakfries.getHealth());
 			}
 		}
 
@@ -391,6 +404,10 @@ public class Level extends JComponent {
 		for (Missile missile : this.normalMissileList) {
 			missile.restartPos();
 		}
+		for (Missile missile: this.trackingMissileList) {
+			missile.restartPos();
+		}
+		
 
 	}
 

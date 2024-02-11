@@ -2,6 +2,7 @@ package mainApp;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 
 /**
@@ -18,12 +19,17 @@ public class Hero {
 	private int x;
 	private int y;
 	private int gravity;
-	
+	private int health;
+	private int coins;
+	private Rectangle rect;
 	
 	public Hero() {
 		this.x = startingX;
 		this.y = startingY;
 		this.gravity = 0;
+		this.health = 3;
+		this.coins = 0;
+		this.rect = new Rectangle(this.x,this.y,10,20);
 		
 	}
 	/**
@@ -50,7 +56,10 @@ public class Hero {
 	 */
 	public void setX(int x) {
 		this.x += x;
+		this.rect.x += x;
 	}
+	
+	
 	/**
 	 * Returns the Hero's current y-value
 	 * @return this.y
@@ -64,6 +73,7 @@ public class Hero {
 	 */
 	public void setY(double y) {
 		this.y += y;
+		this.rect.y += y;
 	}
 	/**
 	 * Resets the Hero's x & y values to their starting values.
@@ -87,5 +97,19 @@ public class Hero {
 	public void setGravity(double value) {
 		this.gravity += value;
 	}
+	public int getHealth() {
+		return health;
+	}
+	public void setHealth(int health) {
+		this.health += health;
+	}
+	public int getCoins() {
+		return coins;
+	}
+	public void setCoins(int coins) {
+		this.coins += coins;
+	}
+	
+	
 	
 }

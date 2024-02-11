@@ -10,4 +10,28 @@ public class TrackingMissile extends Missile {
 	public TrackingMissile(int xCoord, int yCoord) {
 		super(xCoord, yCoord, Color.DARK_GRAY);
 	}
+
+	@Override
+	public void collideCoin(Hero h) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collideMissile(Hero h) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collideBarrier(Hero h) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collideWith(Hero h) {
+		// TODO Auto-generated method stub
+		
+	}
 }

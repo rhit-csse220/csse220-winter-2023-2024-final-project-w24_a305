@@ -8,7 +8,7 @@ import java.awt.geom.Rectangle2D;
  * Class: Missile
  * <br>Purpose: Gets a number of missiles to show up on screen. 
  */
-public abstract class Missile {
+public abstract class Missile implements Collision {
 	
 	private int xCoord;
 	private int yCoord;
