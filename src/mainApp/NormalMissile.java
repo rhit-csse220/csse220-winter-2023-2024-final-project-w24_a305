@@ -15,6 +15,12 @@ public class NormalMissile extends Missile {
 
 
 	@Override
+	/**
+	 * Checks to see if the hero and the normal missile intersects.
+	 * @param Hero r
+	 * @return boolean
+	 * 
+	 */
 	public boolean collideWith(Hero r) {
 		if (this.rect.intersects(r.getRect())) {
 			return true;

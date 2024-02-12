@@ -102,7 +102,7 @@ public class MainApp {
 		while (!game.getCurrentLevel().getGameOver()) {
 			frame.setVisible(true);
 		}
-		frame.setVisible(false);
+		frame.setVisible(false);         
 
 		
 		

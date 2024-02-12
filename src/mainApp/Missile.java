@@ -40,7 +40,7 @@ public abstract class Missile implements Collision {
 		
 	}
 	/**
-	 * Changes the missile's x value by the given value.
+	 * Changes the missile's x value by the given value. Also changes the X value of the rect created for collisions
 	 * @param value
 	 */
 	public void setX(int value) {
@@ -62,7 +62,7 @@ public abstract class Missile implements Collision {
 		return this.yCoord;
 	}
 	/**
-	 * Changes the missile's y value by the given value.
+	 * Changes the missile's y value by the given value. Also changes the y value of the rect created for collisions
 	 * @param value
 	 */
 	public void setY(int value) {
@@ -70,7 +70,7 @@ public abstract class Missile implements Collision {
 		this.rect.y += value;
 	}
 	/**
-	 * Sets the missile x position to its original value when changing a level.
+	 * Resets the positioning of the missile and its rectangle.
 	 */
 	public void restartPos() {
 		this.xCoord = this.startingX;

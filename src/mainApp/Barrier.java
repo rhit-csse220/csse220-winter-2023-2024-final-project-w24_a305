@@ -38,14 +38,26 @@ public abstract class Barrier implements Collision {
 		
 	}
 	
+	/**
+	 * Returns the x coordinates of the left side of the box.
+	 * @return xCoords[0]
+	 */
 	public int getXFromLeft() {
 		return xCoords[0];
 	}
 	
+	/**
+	 * Returns the y coordinates of the bottom side of the box.
+	 * @return xCoords[0]
+	 */
 	public int getBottomY() {
 		return yCoords[2];
 	}
 	
+	/**
+	 * Returns the y coordinates of the top side of the box.
+	 * @return xCoords[0]
+	 */
 	public int getTopY() {
 		return yCoords[0];
 	}

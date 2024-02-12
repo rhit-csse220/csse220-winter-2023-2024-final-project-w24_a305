@@ -39,6 +39,12 @@ public class Coin implements Collision{
 
 
 	@Override
+	/**
+	 * Checks to see if the hero and the coin intersects.
+	 * @param Hero r
+	 * @return boolean
+	 * 
+	 */
 	public boolean collideWith(Hero r) {
 		if (this.rect.intersects(r.getRect())) {
 			return true;
@@ -46,18 +52,34 @@ public class Coin implements Collision{
 		return false;
 	}
 
+	/**
+	 * Returns true if the coin was collected already
+	 * @return boolean collected
+	 */
 	public boolean isCollected() {
 		return collected;
 	}
 
+	/**
+	 * changes the values of collected to value of the parameter
+	 * @param collected
+	 */
 	public void setCollected(boolean collected) {
 		this.collected = collected;
 	}
 	
+	/**
+	 * updates the x position of the rectangle for coin.
+	 * @param x
+	 */
 	public void moveRectLoc(int x) {
 		this.rect.x = x;
 	}
 	
+	/**
+	 * Returns the x value of the coin.
+	 * @return this.x
+	 */
 	public int getX() {
 		return this.x;
 	}

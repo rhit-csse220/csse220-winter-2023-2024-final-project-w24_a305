@@ -99,18 +99,43 @@ public class Hero {
 	public void setGravity(double value) {
 		this.gravity += value;
 	}
+	
+	/**
+	 * Returns the health value of the hero
+	 * @return health
+	 */
 	public int getHealth() {
 		return health;
 	}
+	
+	/**
+	 * Changes the health value by the set amount
+	 * @param health
+	 */
 	public void setHealth(int health) {
 		this.health += health;
 	}
+	
+	/**
+	 * Returns the amount of coins the hero has
+	 * @return coins
+	 */
 	public int getCoins() {
 		return coins;
 	}
+	
+	/**
+	 * Changes the coin amount by the set amount
+	 * @param coins
+	 */
 	public void setCoins(int coins) {
 		this.coins += coins;
 	}
+	
+	/**
+	 * Returns the rectangle that is used for collisions
+	 * @return rect
+	 */
 	public Rectangle getRect() {
 		return rect;
 	}

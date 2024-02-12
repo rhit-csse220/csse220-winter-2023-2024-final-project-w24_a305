@@ -508,6 +508,10 @@ public class Level extends JComponent {
 
 	}
 	
+	/**
+	 *  Returns the value of Game Over
+	 * @return this.gameOver
+	 */
 	public boolean getGameOver(){
 		return this.gameOver;
 	}

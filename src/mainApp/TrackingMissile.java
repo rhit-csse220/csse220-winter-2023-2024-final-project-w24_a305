@@ -14,6 +14,12 @@ public class TrackingMissile extends Missile {
 
 
 	@Override
+	/**
+	 * Checks to see if the hero and the coin intersects.
+	 * @param Hero r
+	 * @return boolean
+	 * 
+	 */
 	public boolean collideWith(Hero r) {
 		if (this.rect.intersects(r.getRect())) {
 			return true;
