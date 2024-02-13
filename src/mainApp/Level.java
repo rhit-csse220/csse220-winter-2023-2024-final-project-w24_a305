@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
@@ -32,6 +33,8 @@ public class Level extends JComponent {
 	private Hero barrySteakfries;
 	private boolean spacePressed;
 	private boolean gameOver;
+	private Rectangle safeZone;
+	private boolean levelWon;
 
 	public Level(String filename) throws FileNotFoundException, IOException, InvalidLevelFormat {
 		// This makes me mad >:(
@@ -39,7 +42,7 @@ public class Level extends JComponent {
 		// String normalBarrier = s.nextLine();
 		// String electricBarrier = s.nextLine();
 		// String coins = s.nextLine();
-
+		this.levelWon = false;
 		this.normalBarrierList = new ArrayList<Barrier>();
 		// System.out.println(this.normalBarrierList);
 		this.electricBarrierList = new ArrayList<Barrier>();
@@ -48,6 +51,7 @@ public class Level extends JComponent {
 		this.trackingMissileList = new ArrayList<Missile>();
 		this.barrySteakfries = new Hero();
 		this.spacePressed = false;
+		safeZone = new Rectangle(940, 0, 60, 400);
 		fileScanner(filename);
 		gameOver = false;
 
@@ -153,6 +157,7 @@ public class Level extends JComponent {
 					+ sideLength * Math.sin(Integer.parseInt(rotation) * Math.PI / 180));
 			yCoords[2] = (int) (yCoords[1] + sideLength * Math.cos(Integer.parseInt(rotation) * Math.PI / 180));
 			yCoords[3] = (int) (yCoords[0] + sideLength * Math.cos(Integer.parseInt(rotation) * Math.PI / 180));
+			
 			Barrier normalBarrier = new NormalBarrier(xCoords, yCoords);
 			this.normalBarrierList.add(normalBarrier);
 
@@ -369,10 +374,10 @@ public class Level extends JComponent {
 		
 		for (Barrier barrier : this.normalBarrierList) {
 			if(barrier.collideWith(this.barrySteakfries)) {
-				if(this.barrySteakfries.getX() + 9  < barrier.getXFromLeft() ) {
+				if(this.barrySteakfries.getX() < barrier.getXFromLeft()) {
 					this.barrySteakfries.setX(-7);
 				}
-				else if(this.barrySteakfries.getY()  < barrier.getTopY()) {
+				else if(this.barrySteakfries.getY() < barrier.getTopY()) {
 					this.barrySteakfries.setY(7 - this.barrySteakfries.getGravity());
 					this.barrySteakfries.setGravity(7 -this.barrySteakfries.getGravity());
 					
@@ -443,6 +448,10 @@ public class Level extends JComponent {
 				missile.restartPos();
 			}
 		}
+		
+		checkLevelWon();
+		
+		
 
 	}
 
@@ -484,7 +493,10 @@ public class Level extends JComponent {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-
+		
+		g2.setColor(Color.GREEN);
+		g2.fill(safeZone);
+		
 		for (Barrier currentBarrier : this.normalBarrierList) {
 			currentBarrier.drawOn(g2);
 		}
@@ -508,12 +520,34 @@ public class Level extends JComponent {
 
 	}
 	
+	public void checkLevelWon() {
+		
+		if (this.barrySteakfries.getX() > 940) {
+			this.levelWon = true;
+			System.out.println("fortnite");
+		} else {
+			this.levelWon = false;
+		}
+		
+		
+	}
+	
+	public boolean getLevelWon() {
+		System.out.println(this.levelWon);
+		return this.levelWon;
+	}
+	
 	/**
 	 *  Returns the value of Game Over
 	 * @return this.gameOver
 	 */
 	public boolean getGameOver(){
 		return this.gameOver;
+	}
+	
+	public void restartHeroStats() {
+		this.barrySteakfries.setCoins(-this.barrySteakfries.getCoins());
+		this.barrySteakfries.setHealth(3 - this.barrySteakfries.getHealth());
 	}
 
 }

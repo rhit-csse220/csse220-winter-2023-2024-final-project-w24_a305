@@ -83,12 +83,24 @@ public class Game {
 			this.currentLevel = this.levels.get(this.levels.indexOf(this.currentLevel) + 1);
 		}
 	}
+	
 	/**
 	 * Returns the current level
 	 * @return this.currentLevel
 	 */
 	public Level getCurrentLevel() {
 		return this.currentLevel;
+	}
+	
+	public int getLevelNum() {
+		return this.levels.indexOf(this.currentLevel);
+	}
+	
+	public void restartGame() {
+		this.getCurrentLevel().restart();
+		this.getCurrentLevel().restartHeroStats();
+		this.currentLevel = this.levels.get(0);
+		
 	}
 	
 }

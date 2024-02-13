@@ -8,8 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
@@ -42,6 +43,30 @@ public class MainApp {
 		frame.setSize(1000, 400);
 		frame.setTitle("Jetpack Joyride");
 		Game game = new Game();
+		JFrame gameWonFrame = new JFrame();
+		gameWonFrame.setSize(200,200);
+		JPanel buttons = new JPanel();
+		JButton restart = new JButton("Restart Game");
+		JButton exit = new JButton("Close Game");
+		buttons.add(restart);
+		buttons.add(exit);
+		gameWonFrame.add(buttons);
+		restart.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				game.restartGame();
+				frame.add(game.getCurrentLevel());
+				game.getCurrentLevel().restart();
+				gameWonFrame.setVisible(false);
+				frame.setVisible(true);
+			}
+			
+		});
+		//exit.addActionListener(new ActionListener() {
+			
+		//});
 		frame.addKeyListener(new KeyListener() {
 
 			@Override
@@ -98,11 +123,31 @@ public class MainApp {
 		t.start();
 	*/
 		
+		
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		while (!game.getCurrentLevel().getGameOver()) {
-			frame.setVisible(true);
+			
+			if (game.getCurrentLevel().getLevelWon()) {
+				//System.out.println("among us");
+				if (game.getLevelNum() == 0) {
+					frame.remove(game.getCurrentLevel());
+					frame.setVisible(false);
+					game.goUpLevel();
+					frame.add(game.getCurrentLevel());
+					frame.setVisible(true);
+				} else {
+					frame.remove(game.getCurrentLevel());
+					frame.setVisible(false);
+					gameWonFrame.setVisible(true);
+					
+				}
+				
+			} else {
+				frame.setVisible(true);
+			}
 		}
-		frame.setVisible(false);         
+		frame.setVisible(false);
 
 		
 		

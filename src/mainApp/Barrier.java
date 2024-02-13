@@ -15,12 +15,19 @@ public abstract class Barrier implements Collision {
 	private int[] yCoords;
 	private Color color;
 	protected Polygon poly;
+	private int[] hbXCoords;
 	
 	public Barrier (int[] xCoords, int[] yCoords, Color color) {
 		this.xCoords = xCoords;
+		this.hbXCoords = this.xCoords;
 		this.yCoords = yCoords;
 		this.color = color;
-		this.poly = new Polygon(xCoords,yCoords,4);
+		
+		if (color == Color.BLACK) {
+			this.hbXCoords[0] -= 10;
+			this.hbXCoords[3] -= 10;
+		}
+		this.poly = new Polygon(hbXCoords,yCoords,4);
 		
 	}
 	
