@@ -1,18 +1,16 @@
 package mainApp;
 
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Scanner;
-/**
- * Class: NormalMissile
- * <br>Purpose: Creates a missile that can only move horizontally
- */
-public class NormalMissile extends Missile {
-	public static final String title = "NormalMissile";
+
+public class DiagonalMissile extends Missile {
+
+public static final String title = "DiagonalMissile";
+private boolean upDown;
 	
-	public NormalMissile(int xCoord, int yCoord) {
-		super(xCoord, yCoord, Color.MAGENTA);
+	public DiagonalMissile(int xCoord, int yCoord) {
+		super(xCoord, yCoord, Color.PINK);
+		this.upDown = true;
+		
 	}
 
 
@@ -33,7 +31,7 @@ public class NormalMissile extends Missile {
 	@Override
 	public String getType() {
 		// TODO Auto-generated method stub
-		return "NormalMissile";
+		return "DiagonalMissile";
 	}
 	
 	@Override
@@ -47,7 +45,19 @@ public class NormalMissile extends Missile {
 	public void updateSelf(Hero barrySteakfries) {
 		// TODO Auto-generated method stub
 
-		this.setX(14);
+		this.setX(12);
+		if (this.getY() < 20) {
+			this.upDown = false;
+		} else if (this.getY() > 350) {
+			this.upDown = true;
+		}
+		
+		if (upDown) {
+			this.setY(-7);
+		} else {
+			this.setY(7);
+		}
+		
 	}
 
 	
@@ -56,3 +66,5 @@ public class NormalMissile extends Missile {
 	
 	
 }
+
+

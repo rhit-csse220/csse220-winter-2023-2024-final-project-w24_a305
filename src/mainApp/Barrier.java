@@ -9,7 +9,7 @@ import java.awt.Rectangle;
  * <br>Purpose: Makes it easier to write code for Normal and Electric Barrier since they share so many things
  * in common. 
  */
-public abstract class Barrier implements Collision {
+public abstract class Barrier extends Collision {
 
 	private int[] xCoords;
 	private int[] yCoords;
@@ -35,6 +35,7 @@ public abstract class Barrier implements Collision {
 	 * Code that makes the barrier be drawn when called in Level.
 	 * @param g2
 	 */
+	@Override
 	public void drawOn(Graphics2D g2) {
 		
 		g2.setColor(this.color);

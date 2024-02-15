@@ -4,21 +4,17 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-/**
- * Class: Coin
- * <br>Purpose: Get the coin to show up on the screen. Later, coins will have different values.
- */
-public class Coin extends Collision{
+public class HeartPowerup extends Collision{
 
-	public static final Color color = Color.ORANGE;
-	public static final int diameter = 20;
-	public static final String title = "Coin";
+	public static final Color color = Color.GREEN;
+	public static final int diameter = 30;
+	public static final String title = "HeartPowerup";
 	private int x;
 	private int y;
 	private Rectangle rect;
 	private boolean collected;
 	
-	public Coin(int x, int y) {
+	public HeartPowerup(int x, int y) {
 		
 		this.x = x;
 		this.y = y;
@@ -57,9 +53,8 @@ public class Coin extends Collision{
 	}
 	
 	/**
-	 * Sets the variable collected to false and resets the location of the coin's hitbox.
+	 * Resets the location of the powerup and its hitbox to their original value
 	 */
-	
 	public void restartPos() {
 		this.setCollected(false);
 		this.moveRectLoc(this.getX());
@@ -100,13 +95,13 @@ public class Coin extends Collision{
 	@Override
 	public String getType() {
 		// TODO Auto-generated method stub
-		return "Coin";
+		return "HeartPowerup";
 	}
 	
 	@Override
 	public void handleCollision(Hero r) {
 		// TODO Auto-generated method stub
-		r.setCoins(1);
+		r.setHealth(1);
 		this.setCollected(true);
 		this.moveRectLoc(1500);
 	}
@@ -116,5 +111,4 @@ public class Coin extends Collision{
 		// TODO Auto-generated method stub
 		
 	}
-	
 }

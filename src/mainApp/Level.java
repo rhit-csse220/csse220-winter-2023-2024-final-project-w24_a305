@@ -25,11 +25,7 @@ import javax.swing.JComponent;
  */
 public class Level extends JComponent {
 
-	private ArrayList<Barrier> normalBarrierList;
-	private ArrayList<Barrier> electricBarrierList;
-	private ArrayList<Coin> coinList;
-	private ArrayList<Missile> normalMissileList;
-	private ArrayList<Missile> trackingMissileList;
+	private ArrayList<Collision> gameObjects;
 	private Hero barrySteakfries;
 	private boolean spacePressed;
 	private boolean gameOver;
@@ -37,28 +33,14 @@ public class Level extends JComponent {
 	private boolean levelWon;
 
 	public Level(String filename) throws FileNotFoundException, IOException, InvalidLevelFormat {
-		// This makes me mad >:(
 
-		// String normalBarrier = s.nextLine();
-		// String electricBarrier = s.nextLine();
-		// String coins = s.nextLine();
+		this.gameObjects = new ArrayList<Collision>();
 		this.levelWon = false;
-		this.normalBarrierList = new ArrayList<Barrier>();
-		// System.out.println(this.normalBarrierList);
-		this.electricBarrierList = new ArrayList<Barrier>();
-		this.coinList = new ArrayList<Coin>();
-		this.normalMissileList = new ArrayList<Missile>();
-		this.trackingMissileList = new ArrayList<Missile>();
 		this.barrySteakfries = new Hero();
 		this.spacePressed = false;
 		safeZone = new Rectangle(940, 0, 60, 400);
 		fileScanner(filename);
 		gameOver = false;
-
-		// createNormalBarriers(normalBarrier);
-
-		// s.close();
-		// f1.close();
 
 	}
 
@@ -97,13 +79,17 @@ public class Level extends JComponent {
 			createCoins(s2.nextLine());
 			createNormalMissiles(s2.nextLine());
 			createTrackingMissiles(s2.nextLine());
+			createCoolCoins(s2.nextLine());
+			createHeartPowerup(s2.nextLine());
+			createDiagonalMissile(s2.nextLine());
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
 		}
 
-		// System.out.println(filename);
 
 	}
+	
+	
 
 	/**
 	 * Creates the Normal Barriers by taking in a string with x & y coordinates and
@@ -117,7 +103,6 @@ public class Level extends JComponent {
 
 	public void createNormalBarriers(String normalBarrierParam) {
 
-		// ArrayList<Polygon> normalBarriers = new ArrayList<Polygon>();
 
 		String[] coordinates = normalBarrierParam.split(",");
 
@@ -158,16 +143,11 @@ public class Level extends JComponent {
 			yCoords[2] = (int) (yCoords[1] + sideLength * Math.cos(Integer.parseInt(rotation) * Math.PI / 180));
 			yCoords[3] = (int) (yCoords[0] + sideLength * Math.cos(Integer.parseInt(rotation) * Math.PI / 180));
 			
-			Barrier normalBarrier = new NormalBarrier(xCoords, yCoords);
-			this.normalBarrierList.add(normalBarrier);
+			
+			Collision normalBarrier = new NormalBarrier(xCoords, yCoords);
+			this.gameObjects.add(normalBarrier);
 
 		}
-		// System.out.println(x);
-		// System.out.println(y);
-		// System.out.println(rotation);
-
-		// normalBarriers.add(normalBarrier);
-		// return normalBarriers;
 	}
 
 	/**
@@ -218,8 +198,9 @@ public class Level extends JComponent {
 					+ sideLength * Math.sin(Integer.parseInt(rotation) * Math.PI / 180));
 			yCoords[2] = (int) (yCoords[1] + sideLength * Math.cos(Integer.parseInt(rotation) * Math.PI / 180));
 			yCoords[3] = (int) (yCoords[0] + sideLength * Math.cos(Integer.parseInt(rotation) * Math.PI / 180));
-			Barrier electricBarrier = new ElectricBarrier(xCoords, yCoords);
-			this.electricBarrierList.add(electricBarrier);
+			
+			Collision electricBarrier = new ElectricBarrier(xCoords, yCoords);
+			this.gameObjects.add(electricBarrier);
 		}
 	}
 
@@ -254,11 +235,45 @@ public class Level extends JComponent {
 			int xCoord = Integer.parseInt(x);
 			int yCoord = Integer.parseInt(y);
 
-			Coin coin = new Coin(xCoord, yCoord);
-
-			this.coinList.add(coin);
+			Collision coin = new Coin(xCoord, yCoord);
+			this.gameObjects.add(coin);
 		}
 
+	}
+	
+	/**
+	 * Creates a second kind of coin, that is worth 3 points instead of 1.
+	 * X/Y coordinates for its location are taken from the current level text file.
+	 * @param coinParam
+	 */
+	public void createCoolCoins(String coinParam) {
+		String[] coordinates = coinParam.split(",");
+
+		String x = "";
+		String y = "";
+		int numOfCoins = coordinates.length / 2;
+
+		for (int j = 0; j < numOfCoins; j++) {
+
+			String[] sub = new String[2];
+			sub[0] = coordinates[j * 2];
+			sub[1] = coordinates[j * 2 + 1];
+
+			for (int i = 0; i < 3; i++) {
+
+				if (i == 0) {
+					x = sub[i];
+				} else if (i == 1) {
+					y = sub[i];
+				}
+			}
+
+			int xCoord = Integer.parseInt(x);
+			int yCoord = Integer.parseInt(y);
+
+			Collision coolCoin = new CoolCoin(xCoord, yCoord);
+			this.gameObjects.add(coolCoin);
+		}
 	}
 
 	/**
@@ -292,10 +307,11 @@ public class Level extends JComponent {
 
 			int xCoord = Integer.parseInt(x);
 			int yCoord = Integer.parseInt(y);
-
-			Missile missile = new NormalMissile(xCoord, yCoord);
-			this.normalMissileList.add(missile);
+			
+			Collision missile = new NormalMissile(xCoord, yCoord);
+			this.gameObjects.add(missile);
 		}
+		
 
 	}
 
@@ -330,12 +346,82 @@ public class Level extends JComponent {
 
 			int xCoord = Integer.parseInt(x);
 			int yCoord = Integer.parseInt(y);
-
-			Missile missile = new TrackingMissile(xCoord, yCoord);
-
-			this.trackingMissileList.add(missile);
+			
+			Collision missile = new TrackingMissile(xCoord, yCoord);
+			this.gameObjects.add(missile);
 		}
 
+	}
+	
+	/**
+	 * Creates a heart powerup that increases the number of hearts by 1. Takes in x/y coordinates
+	 * from a scanner that reads the current level's text file.
+	 * @param heartPowerupParam
+	 */
+	public void createHeartPowerup(String heartPowerupParam) {
+		
+		String[] coordinates = heartPowerupParam.split(",");
+
+		String x = "";
+		String y = "";
+		int numOfPowerups = coordinates.length / 2;
+
+		for (int j = 0; j < numOfPowerups; j++) {
+
+			String[] sub = new String[2];
+			sub[0] = coordinates[j * 2];
+			sub[1] = coordinates[j * 2 + 1];
+
+			for (int i = 0; i < 3; i++) {
+
+				if (i == 0) {
+					x = sub[i];
+				} else if (i == 1) {
+					y = sub[i];
+				}
+			}
+
+			int xCoord = Integer.parseInt(x);
+			int yCoord = Integer.parseInt(y);
+
+			Collision heartPowerup = new HeartPowerup(xCoord, yCoord);
+			this.gameObjects.add(heartPowerup);
+		}
+	}
+	
+	/**
+	 * Creates diagonal missiles that move diagonal up/down across a certain range. Takes in starting x/y coordinates
+	 * from a scanner that reads the current level's text file.
+	 * @param diagonalParam
+	 */
+	public void createDiagonalMissile(String diagonalParam) {
+		String[] coordinates = diagonalParam.split(",");
+
+		String x = "";
+		String y = "";
+		int numOfMissiles = coordinates.length / 2;
+
+		for (int j = 0; j < numOfMissiles; j++) {
+
+			String[] sub = new String[2];
+			sub[0] = coordinates[j * 2];
+			sub[1] = coordinates[j * 2 + 1];
+
+			for (int i = 0; i < 3; i++) {
+
+				if (i == 0) {
+					x = sub[i];
+				} else if (i == 1) {
+					y = sub[i];
+				}
+			}
+
+			int xCoord = Integer.parseInt(x);
+			int yCoord = Integer.parseInt(y);
+			
+			Collision diagonalMissile = new DiagonalMissile(xCoord, yCoord);
+			this.gameObjects.add(diagonalMissile);
+		}
 	}
 
 	/**
@@ -363,90 +449,32 @@ public class Level extends JComponent {
 		if (this.barrySteakfries.getY() < 0) {
 			this.barrySteakfries.setY(-this.barrySteakfries.getY());
 		}
-		for (Coin coin : this.coinList) {
-			if (coin.collideWith(this.barrySteakfries)) {
-				this.barrySteakfries.setCoins(1);
-				System.out.println("You have " + this.barrySteakfries.getCoins() + " coins.");
-				coin.setCollected(true);
-				coin.moveRectLoc(1500);
-			}
-		}
 		
-		for (Barrier barrier : this.normalBarrierList) {
-			if(barrier.collideWith(this.barrySteakfries)) {
-				if(this.barrySteakfries.getX() < barrier.getXFromLeft()) {
-					this.barrySteakfries.setX(-7);
+		for (Collision gameObject: gameObjects) {
+			
+			if (gameObject.getType().equals("TrackingMissile") || gameObject.getType().equals("NormalMissile") ||
+					gameObject.getType().equals("DiagonalMissile")) {
+				if (gameObject.getX() < -50) {
+					gameObject.restartPos(); 
 				}
-				else if(this.barrySteakfries.getY() < barrier.getTopY()) {
-					this.barrySteakfries.setY(7 - this.barrySteakfries.getGravity());
-					this.barrySteakfries.setGravity(7 -this.barrySteakfries.getGravity());
-					
-				}
-				else {
-					System.out.println("d");
-					this.barrySteakfries.setY(7);
-				}
-			}
-		}
-		
-		for (Barrier barrier: this.electricBarrierList) {
-			if (barrier.collideWith(this.barrySteakfries)) {
-				this.barrySteakfries.setHealth(-1);
 				
+				gameObject.updateSelf(this.barrySteakfries);
+			}
+			
+			if (gameObject.collideWith(this.barrySteakfries)) {
+				gameObject.handleCollision(this.barrySteakfries);
 				if (this.barrySteakfries.getHealth() == 0) {
-					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
 					this.gameOver = true;
 					System.out.println("Game Over!!!");
-				} else if(this.barrySteakfries.getHealth() > 0) {
+				} else if(gameObject.getType().equals("ElectricBarrier") || gameObject.getType().equals("NormalMissile") || 
+						gameObject.getType().equals("TrackingMissile") || gameObject.getType().equals("DiagonalMissile") 
+						&& this.barrySteakfries.getHealth() > 0) {
+					gameObject.restartPos();
 					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
 					restart();
 				}
 			}
-		}
-		
-		for (Missile missile : this.normalMissileList) {
-			missile.setX(14);
-			if (missile.collideWith(this.barrySteakfries)) {
-				this.barrySteakfries.setHealth(-1);
-				
-				if (this.barrySteakfries.getHealth() == 0) {
-					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
-					this.gameOver = true;
-					System.out.println("Game Over!!!");
-				} else {
-					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
-					restart();
-				}
-			}
-			if (missile.getX() < -50) {
-				missile.restartPos();
-			}
-
-		}
-
-		for (Missile missile : this.trackingMissileList) {
-			missile.setX(14);
-			if (missile.getX() > this.barrySteakfries.getX()) {
-				if (missile.getY() < this.barrySteakfries.getY()) {
-					missile.setY(3);
-				} else if (missile.getY() > this.barrySteakfries.getY()) {
-					missile.setY(-3);
-				}
-			}
-			if (missile.collideWith(this.barrySteakfries)) {
-				this.barrySteakfries.setHealth(-1);
-				if (this.barrySteakfries.getHealth() == 0) {
-					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
-					this.gameOver = true;
-					System.out.println("Game Over!!!");
-				} else {
-					System.out.println("You have " + this.barrySteakfries.getHealth() + " hearts left.");
-					restart();
-				}
-			}
-			if (missile.getX() < -50) {
-				missile.restartPos();
-			}
+			
 		}
 		
 		checkLevelWon();
@@ -471,17 +499,46 @@ public class Level extends JComponent {
 	public void restart() {
 
 		this.barrySteakfries.restartPos();
-		for (Missile missile : this.normalMissileList) {
-			missile.restartPos();
-		}
-		for (Missile missile : this.trackingMissileList) {
-			missile.restartPos();
-		}
-		for (Coin coin : this.coinList) {
-			coin.setCollected(false);
-			coin.moveRectLoc(coin.getX());
+		for (Collision gameObject : gameObjects) {
+			gameObject.restartPos();
 		}
 
+	}
+	
+	/**
+	 * Handles returning the health of the hero
+	 * @return the hero's current health
+	 */
+	
+	public int handleReturnHealth() {
+		return this.barrySteakfries.getHealth();
+	}
+	
+	/**
+	 * Handles returning the hero's coin amount
+	 * @return the hero's current coin amount
+	 */
+	
+	public int handleReturnCoins() {
+		return this.barrySteakfries.getCoins();
+	}
+	
+	/**
+	 * Handles setting the hero's health to a certain number
+	 * @param num
+	 */
+	
+	public void handleHardSetHeroHealth(int num) {
+		this.barrySteakfries.hardSetHealth(num);
+	}
+	
+	/**
+	 * handles setting the hero's coins to a certain number
+	 * @param num
+	 */
+	
+	public void handleHardSetHeroCoins(int num) {
+		this.barrySteakfries.hardSetCoins(num);
 	}
 
 	/**
@@ -497,34 +554,20 @@ public class Level extends JComponent {
 		g2.setColor(Color.GREEN);
 		g2.fill(safeZone);
 		
-		for (Barrier currentBarrier : this.normalBarrierList) {
-			currentBarrier.drawOn(g2);
-		}
-		for (Barrier currentBarrier : this.electricBarrierList) {
-			currentBarrier.drawOn(g2);
-		}
-		for (Coin currentCoin : this.coinList) {
-			if (!currentCoin.isCollected()) {
-				currentCoin.drawOn(g2);
-			}
+		for (Collision gameObject: gameObjects) {
+			gameObject.drawOn(g2);
 		}
 		this.barrySteakfries.drawOn(g2);
 
-		for (Missile missile : this.normalMissileList) {
-			missile.drawOn(g2);
-		}
-
-		for (Missile missile : this.trackingMissileList) {
-			missile.drawOn(g2);
-		}
-
 	}
 	
+	/**
+	 * Checks if the hero has won the current level by seeing if its x has passed a certain point.
+	 * Depending on the answer, sets the levelWon variable to true/false
+	 */
 	public void checkLevelWon() {
-		
 		if (this.barrySteakfries.getX() > 940) {
 			this.levelWon = true;
-			System.out.println("fortnite");
 		} else {
 			this.levelWon = false;
 		}
@@ -532,8 +575,20 @@ public class Level extends JComponent {
 		
 	}
 	
+	/**
+	 * Sets the levelWon variable the parameter's value
+	 * @param set
+	 */
+	public void setLevelWon(boolean set) {
+		this.levelWon = set;
+	}
+	
+	/**
+	 * Return the current level of the levelWon variable
+	 * @return this.levelWon
+	 */
+	
 	public boolean getLevelWon() {
-		System.out.println(this.levelWon);
 		return this.levelWon;
 	}
 	
@@ -545,9 +600,13 @@ public class Level extends JComponent {
 		return this.gameOver;
 	}
 	
+	/**
+	 * Resets the hero's health to 3 and coin amount to 0
+	 */
+	
 	public void restartHeroStats() {
-		this.barrySteakfries.setCoins(-this.barrySteakfries.getCoins());
-		this.barrySteakfries.setHealth(3 - this.barrySteakfries.getHealth());
+		this.barrySteakfries.hardSetCoins(0);
+		this.barrySteakfries.hardSetHealth(3);
 	}
 
 }

@@ -13,7 +13,7 @@ public class Hero {
 
 	public static final int startingX = 10;
 	public static final int startingY = 200;
-	public static final int rightSpeed = 2;
+	public static final int rightSpeed = 10;
 	public static final int upSpeed = 4;
 	public static final Color color = Color.BLUE;
 	private int x;
@@ -130,6 +130,23 @@ public class Hero {
 	 */
 	public void setCoins(int coins) {
 		this.coins += coins;
+	}
+	
+	/**
+	 * Sets the health to  a specified number
+	 * @param num
+	 */
+	public void hardSetHealth(int num) {
+		this.health = num;
+	}
+	
+	/**
+	 * Sets the coin amount to a specified number
+	 * @param num
+	 */
+	
+	public void hardSetCoins(int num) {
+		this.coins = num;
 	}
 	
 	/**

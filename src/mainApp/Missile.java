@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
  * Class: Missile
  * <br>Purpose: Gets a number of missiles to show up on screen. 
  */
-public abstract class Missile implements Collision {
+public abstract class Missile extends Collision {
 	
 	private int xCoord;
 	private int yCoord;
@@ -31,6 +31,7 @@ public abstract class Missile implements Collision {
 	 * Code that makes the missile be drawn when called in Level.
 	 * @param g2
 	 */
+	@Override
 	public void drawOn(Graphics2D g2) {
 		
 		g2.setColor(this.color);
@@ -73,6 +74,7 @@ public abstract class Missile implements Collision {
 	 * Resets the positioning of the missile and its rectangle.
 	 */
 	public void restartPos() {
+		
 		this.xCoord = this.startingX;
 		this.yCoord = this.startingY;
 		this.rect.x = this.startingX;

@@ -26,8 +26,51 @@ public class NormalBarrier extends Barrier {
 			return true;
 		}
 		return false;
+		
+		
 	}
-
+	
+	@Override
+	
+	public void handleCollision(Hero r) {
+		if(r.getX() < this.getXFromLeft()) {
+			r.setX(-7);
+		} else if(r.getY() < this.getTopY()) {
+			r.setY(7 - r.getGravity());
+			r.setGravity(7 -r.getGravity());
+			
+		}
+		else {
+			System.out.println("d");
+			r.setY(7);
+		}
+	}
+	
+	@Override
+	
+	public String getType() {
+		
+		return "NormalBarrier";
+		
+	}
+	
+	@Override
+	public void restartPos() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void updateSelf(Hero barrySteakfries) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public int getX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 	

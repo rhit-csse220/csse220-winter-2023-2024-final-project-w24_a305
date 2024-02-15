@@ -28,6 +28,43 @@ public class ElectricBarrier extends Barrier {
 		return false;
 	}
 
+
+	@Override
+	public void handleCollision(Hero r) {
+		// TODO Auto-generated method stub
+		r.setHealth(-1);
+	}
+
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return "ElectricBarrier";
+	}
+
+
+	@Override
+	public void restartPos() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void updateSelf(Hero barrySteakfries) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int getX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
 	
 	
 }

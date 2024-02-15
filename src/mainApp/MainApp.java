@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -37,10 +38,11 @@ public class MainApp {
 	 */
 	
 	private static void runApp() throws FileNotFoundException, IOException, InvalidLevelFormat {
+		boolean restartWindowOpen = false;
 		System.out.println("Write your cool arcade game here!");
 		System.out.println("Testing");
 		JFrame frame = new JFrame();
-		frame.setSize(1000, 400);
+		frame.setSize(1000, 430);
 		frame.setTitle("Jetpack Joyride");
 		Game game = new Game();
 		JFrame gameWonFrame = new JFrame();
@@ -51,22 +53,27 @@ public class MainApp {
 		buttons.add(restart);
 		buttons.add(exit);
 		gameWonFrame.add(buttons);
+		game.insertStats(frame);
 		restart.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				game.restartGame();
-				frame.add(game.getCurrentLevel());
-				game.getCurrentLevel().restart();
+				game.goToLevel(0);
 				gameWonFrame.setVisible(false);
-				frame.setVisible(true);
+				frame.add(game.getCurrentLevel());
 			}
 			
 		});
-		//exit.addActionListener(new ActionListener() {
+		exit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
 			
-		//});
+		});
 		frame.addKeyListener(new KeyListener() {
 
 			@Override
@@ -126,25 +133,35 @@ public class MainApp {
 		
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gameWonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		while (!game.getCurrentLevel().getGameOver()) {
-			
+			//System.out.println(game.getCurrentLevel().getLevelWon());
+			System.out.println(game.getLevelNum());
+			if (game.getLevelNum() == 0) {
+				restartWindowOpen = false;
+			}
 			if (game.getCurrentLevel().getLevelWon()) {
-				//System.out.println("among us");
+				
 				if (game.getLevelNum() == 0) {
+					game.getCurrentLevel().setLevelWon(false);
 					frame.remove(game.getCurrentLevel());
 					frame.setVisible(false);
 					game.goUpLevel();
 					frame.add(game.getCurrentLevel());
 					frame.setVisible(true);
-				} else {
+				} else if (game.getLevelNum() == 1){
+					game.getCurrentLevel().setLevelWon(false);
 					frame.remove(game.getCurrentLevel());
 					frame.setVisible(false);
 					gameWonFrame.setVisible(true);
-					
+					restartWindowOpen = true;
+				} else {
+					System.out.println("oops");
 				}
 				
-			} else {
+			} else if (!restartWindowOpen){
 				frame.setVisible(true);
+				//System.out.println("test");
 			}
 		}
 		frame.setVisible(false);
