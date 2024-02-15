@@ -164,7 +164,7 @@ public class MainApp {
 				//System.out.println("test");
 			}
 		}
-		frame.setVisible(false);
+		System.exit(0);
 
 		
 		
